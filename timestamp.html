@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ror</title>
+    <style>
+        body {
+            background-color: rgb(119, 119, 119);
+            margin: 0;
+            padding: 18px;
+            font-size: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: rgb(255, 188, 229);
+            border-radius: 18px;
+            box-shadow: 5px 10px pink;
+            text-align: center;
+        }
+
+        .profile {
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            margin: 0;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile .logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-self: center;
+            padding: 0;
+            margin: 0;
+        }
+
+        .profile p {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .form-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .form-content h4 {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .custom-file-label {
+            display: inline-block;
+            background-color: rgb(255, 136, 202);
+            color: rgb(255, 255, 255);
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 120px;
+            height: 20px;
+            font-size: 18px;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .custom-file-label:hover {
+            background-color: rgb(151, 243, 255);
+            color: rgb(255, 136, 202);
+        }
+
+        #download {
+            background-color: rgb(255, 71, 71);
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: none;
+            width: 120px;
+            height: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            font-size: 16px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #download:hover {
+            background-color: rgb(200, 0, 50);
+        }
+
+        canvas {
+            margin-top: 20px;
+            border-radius: 10px;
+            background-color: rgb(181, 181, 181);
+            max-width: 400px;
+            max-height: 800px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        @media(max-width: 400px) {
+            .main-content {
+                padding: 0px;
+            }
+
+            .main-content .profile {
+                margin-left: 20px;
+                padding: 5px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .profile p {
+                font-size: 8px;
+            }
+
+            .main-content .form-content {
+                margin: 10px;
+                padding: 5px;
+                font-size: x-small;
+            }
+
+            .custom-file-label {
+                width: 80px;
+                height: 10px;
+                font-size: 10px;
+            }
+
+            #download {
+                width: 80px;
+                height: 10px;
+                font-size: 8px;
+            }
+
+            #canvas {
+                max-width: 300px;
+                max-height: 600px;
+            }
+
+        }
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <div class="profile">
+            <img class="logo" src="https://cdn.discordapp.com/attachments/1145230939300057169/1350619039562469437/Kurmo-ror.png?ex=67d76580&is=67d61400&hm=75adaf90072952b7b45fdf59d96f4354a07685ead492ce44e10fb5908d29e3c7&">
+        </div>
+        <div class="form-content">
+            <h4>Ngasi timestamp difotoan</h4>
+            <label for="imageInput" class="custom-file-label">Choose Image</label>
+            <input type="file" id="imageInput" accept="image/*">
+            <a id="download">Download Image</a>
+        </div>
+    </div>
+    
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const imageInput = document.getElementById("imageInput");
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+        const downloadBtn = document.getElementById("download");
+
+        imageInput.addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const img = new Image();
+                img.onload = function () {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0, img.width, img.height);
+
+                    // Change this to "en-US" for english
+                    // Change this to "id-ID" for indonesia
+                    const timestamp = new Date().toLocaleDateString("id-ID", {
+                        weekday: "long",
+                        day: "2-digit",
+                        month: "long",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        second: "2-digit",
+                        hour12: false
+                    });
+
+                    // To Edit the Size Just Adjust the Font Pixels
+                    ctx.font = "18px Times New Roman";
+                    ctx.fillStyle = "rgb(255, 255, 255, 1)";
+                    ctx.strokeStyle = "black";
+                    ctx.lineWidth = 4;
+                    ctx.textAlign = "right";
+
+                    const x = img.width - 20;
+                    const y = img.height - 20;
+
+                    ctx.strokeText(timestamp, x, y);
+                    ctx.fillText(timestamp, x, y);
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        downloadBtn.addEventListener("click", function () {
+            const link = document.createElement("a");
+
+            // Change this for the file name
+            link.download = "your-timestamped-image.png";
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+        });
+    </script>
+</body>
+</html>
